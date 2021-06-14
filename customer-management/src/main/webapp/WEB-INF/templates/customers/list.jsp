@@ -1,16 +1,4 @@
-<%@ page import="cg.wbd.grandemonstration.service.CustomerService" %>
-<%@ page import="cg.wbd.grandemonstration.service.CustomerServiceFactory" %>
-<%@ page import="cg.wbd.grandemonstration.model.Customer" %>
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%!
-    private CustomerService customerService = CustomerServiceFactory.getInstance();
-%>
-<%
-    long count = customerService.count();
-    List<Customer> customers = customerService.findAll();
-%>
 <style>
     table {
         border: 1px solid #000;
@@ -38,7 +26,7 @@ There are ${requestScope.customers.size()} customer(s) in list.
                 <c:out value="${c.id}"/>
             </td>
             <td>
-                <a href="info.jsp?id=${c.id}">${c.name}</a>
+                <a href="/customers/${c.id}">${c.name}</a>
             </td>
             <td>
                 <c:out value="${c.email}"/>
