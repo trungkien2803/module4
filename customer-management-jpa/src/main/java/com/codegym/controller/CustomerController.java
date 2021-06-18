@@ -19,9 +19,17 @@ public class CustomerController {
         modelAndView.addObject("customer", new Customer());
         return modelAndView;
     }
+//    @PostMapping("/create-customer")
+//    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer) {
+//        customerService.save(customer);
+//        ModelAndView modelAndView = new ModelAndView("/customer/create");
+//        modelAndView.addObject("customer", new Customer());
+//        modelAndView.addObject("message", "New customer created successfully");
+//        return modelAndView;
+//    }
     @PostMapping("/create-customer")
     public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer) {
-        customerService.save(customer);
+        customerService.insertWithStoredProcedure(customer);
         ModelAndView modelAndView = new ModelAndView("/customer/create");
         modelAndView.addObject("customer", new Customer());
         modelAndView.addObject("message", "New customer created successfully");
@@ -37,15 +45,15 @@ public class CustomerController {
     @GetMapping("/edit-customer/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
         Customer customer = customerService.findById(id);
-        if (customer != null) {
-            ModelAndView modelAndView = new ModelAndView("/customer/edit");
+        ModelAndView modelAndView;
+        if(customer != null) {
+            modelAndView = new ModelAndView("/customer/edit");
             modelAndView.addObject("customer", customer);
-            return modelAndView;
 
         } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
+            modelAndView = new ModelAndView("/error.404");
         }
+        return modelAndView;
     }
 
     @PostMapping("/edit-customer")
