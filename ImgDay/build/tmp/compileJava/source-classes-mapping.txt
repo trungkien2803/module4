@@ -1,12 +1,16 @@
+com/codegym/repository/ImgRepository.java
+ com.codegym.repository.ImgRepository
+com/codegym/service/IImgService.java
+ com.codegym.service.IImgService
+com/codegym/repository/IImgRepository.java
+ com.codegym.repository.IImgRepository
+com/codegym/service/ImgService.java
+ com.codegym.service.ImgService
+com/codegym/model/Img.java
+ com.codegym.model.Img
 com/codegym/config/AppInit.java
  com.codegym.config.AppInit
 com/codegym/config/AppConfig.java
  com.codegym.config.AppConfig
 com/codegym/controller/ImgController.java
  com.codegym.controller.ImgController
-com/codegym/model/Img.java
- com.codegym.model.Img
-com/codegym/service/ImgService.java
- com.codegym.service.ImgService
-com/codegym/service/IImgService.java
- com.codegym.service.IImgService

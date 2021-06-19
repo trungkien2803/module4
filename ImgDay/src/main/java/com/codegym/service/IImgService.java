@@ -9,5 +9,5 @@ public interface IImgService {
 
     Img findOne(Long id);
 
-    Img save(Img img);
+    void save(Img img);
 }

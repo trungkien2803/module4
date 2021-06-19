@@ -3,6 +3,7 @@ package com.codegym.controller;
 import com.codegym.model.Img;
 import com.codegym.service.IImgService;
 import com.codegym.service.ImgService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,10 @@ import java.util.List;
 
 @Controller
 public class ImgController {
-    IImgService imgService = new ImgService();
-    @GetMapping("/")
+    @Autowired
+    IImgService imgService;
+
+    @GetMapping("/img")
     public ModelAndView index(Model model){
         ModelAndView modelAndView = new ModelAndView("index");
         List<Img> imgs = imgService.findAll();
@@ -30,6 +33,6 @@ public class ImgController {
     @PostMapping("/save")
     public String save(Img img) {
         imgService.save(img);
-        return "redirect:/";
+        return "redirect:/img";
     }
 }
