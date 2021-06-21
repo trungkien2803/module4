@@ -33,4 +33,9 @@ public class ProvinceService implements IProvinceService {
     public void remove(Long id) {
         provinceRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Province> findAllByFirstNameContaining(String name, Pageable pageable) {
+        return provinceRepository.findAllByNameContaining(name, pageable);
+    }
 }
