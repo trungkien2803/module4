@@ -2,16 +2,7 @@ package com.codegym.service;
 
 import com.codegym.model.Img;
 import com.codegym.repository.IImgRepository;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImgService implements IImgService {
@@ -29,8 +20,12 @@ public class ImgService implements IImgService {
     }
 
     @Override
-    public void save(Img img) {
-        imgRepository.save(img);
+    public void save(Img img) throws Exception {
+        if ("xyz".equals(img.getFeedback())){
+            throw new Exception("Tu ngu khong phu hop\n"+img.getFeedback()+"\n" );
+        } else {
+            imgRepository.save(img);
+        }
     }
 
 }

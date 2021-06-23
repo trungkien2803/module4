@@ -31,8 +31,12 @@ public class ImgController {
         return modelAndView;
     }
     @PostMapping("/save")
-    public String save(Img img) {
-        imgService.save(img);
-        return "redirect:/img";
+    public String save(Img img)  {
+        try {
+            imgService.save(img);
+            return "redirect:/img";
+        } catch (Exception e) {
+            return "redirect:/comment";
+        }
     }
 }

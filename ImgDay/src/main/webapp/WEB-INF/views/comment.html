@@ -8,9 +8,9 @@
 <a href="/">Back</a>
 <div>
   <form action="/save" th:object="${img}" method="post">
-    <input th:field="*{author}">
-    <input th:field="*{feedback}">
-    <input th:field="*{mark}">
+    <input th:field="*{author}" placeholder="tác giả">
+    <input th:field="*{feedback}" placeholder="bình luận">
+    <input th:field="*{mark}" placeholder="điểm">
     <button>Save</button>
   </form>
 </div>
