@@ -100,6 +100,12 @@
                     type: "get",
                     url: "/city",
                     success: function (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         getListCity(data)
                     }
                 })
@@ -205,14 +211,14 @@
         </tr>
         </thead>`
         for (let i = 0; i < data.length; i++) {
-            content += `<tr data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">
-            <th scope="row">${data[i].id}</th>
-            <td>${data[i].name}</td>
-            <td>${data[i].country.name}</td>
-            <td>${data[i].acreage}</td>
-            <td>${data[i].population}</td>
-            <td>${data[i].gdp}</td>
-            <td>${data[i].description}</td>
+            content += `<tr>
+            <th data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})" scope="row">${data[i].id}</th>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].name}</td>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].country.name}</td>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].acreage}</td>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].population}</td>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].gdp}</td>
+            <td data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">${data[i].description}</td>
             <td onclick="remove(${data[i].id})">
             <button type="button" style="color: red">
                       Delete
@@ -263,6 +269,12 @@
                     type: "get",
                     url: "/city",
                     success: function (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         getListCity(data)
                     }
                 })
