@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <style>
+        span{
+            margin-left: 20px;
+            font-size: 36px;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        onclick="getCountry()">
+    ADD
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+                <!--                <div><input type="text" id="name" placeholder="name"></div>-->
+                <!--                <div><input type="text" id="acreage" placeholder="acreage"></div>-->
+                <!--                <div><input type="text" id="description" placeholder="description"></div>-->
+                <!--                <div><input type="text" id="gdp" placeholder="gpa"></div>-->
+                <!--                <div><input type="text" id="population" placeholder="population"></div>-->
+                <!--                <div>-->
+                <!--                    <select id="country">-->
+
+                <!--                    </select>-->
+                <!--                </div>-->
+            </div>
+            <div class="modal-footer" id="button">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="" id="save">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <table class="table" id="list-product">
+
+    </table>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "get",
+            url: "/city",
+            success: function (data) {
+                getListCity(data)
+            }
+        })
+    })
+
+    function addCity() {
+        let name = $("#name").val()
+        let country = $("#country").val()
+        let acreage = $("#acreage").val()
+        let population = $("#population").val()
+        let gdp = $("#gdp").val()
+        let description = $("#description").val()
+        let city = {
+            name: name,
+            country: {
+                id: country
+            },
+            acreage: acreage,
+            population: population,
+            gdp: gdp,
+            description: description,
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "post",
+            data: JSON.stringify(city),
+            url: "/add",
+            success: function (data) {
+                $.ajax({
+                    type: "get",
+                    url: "/city",
+                    success: function (data) {
+                        getListCity(data)
+                    }
+                })
+            }
+        })
+    }
+
+    function getCountry() {
+        $.ajax({
+            type: "get",
+            url: "/country",
+            success: function (data) {
+                let content = ``
+                for (let i = 0; i < data.length; i++) {
+                    content += ` <option value="${data[i].id}">
+                                    ${data[i].name}
+                           </option>`
+                }
+                document.getElementById("modal-content").innerHTML = `
+                    <div><input type="text" id="name" placeholder="name"></div>
+                <div><input type="text" id="acreage" placeholder="acreage"></div>
+                <div><input type="text" id="description" placeholder="description"></div>
+                <div><input type="text" id="gdp" placeholder="gpa"></div>
+                <div><input type="text" id="population" placeholder="population"></div>
+                <div>
+                    <select id="country">
+
+                    </select>
+                </div>`
+                document.getElementById("country").innerHTML = content;
+                document.getElementById("exampleModalLabel").innerHTML = "ADD"
+
+                document.getElementById('save').setAttribute('onclick', 'addCity()');
+            }
+        })
+    }
+
+    function remove(id) {
+        $.ajax({
+            type: "delete",
+            url: "/delete/" + id,
+            success: function () {
+                $.ajax({
+                    type: "get",
+                    url: "/city",
+                    success: function (data) {
+                        getListCity(data)
+                    }
+                })
+            }
+        })
+    }
+
+    function findCity(id) {
+        $.ajax({
+            type: "get",
+            url: "/find/" + id,
+            success: function (data) {
+                let content = `<div><input type="hidden" value="${data.id}" id="id" placeholder="id"></div>
+<div><input type="text" value="${data.name}" id="name" placeholder="name"></div>
+                <div><input type="text" value="${data.acreage}" id="acreage" placeholder="acreage"></div>
+                <div><input type="text" value="${data.description}" id="description" placeholder="description"></div>
+                <div><input type="text" value="${data.gdp}" id="gdp" placeholder="gpa"></div>
+                <div><input type="text" value="${data.population}" id="population" placeholder="population"></div>
+                <div>
+                    <select id="country">
+                        <option value="${data.country.id}">
+                                    ${data.country.name}
+                        </option>`
+                $.ajax({
+                    type: "get",
+                    url: "/country",
+                    success: function (data) {
+                        for (let i = 0; i < data.length; i++) {
+                            content += ` <option value="${data[i].id}">
+                                    ${data[i].name}
+                           </option>`
+                        }
+                        document.getElementById("modal-content").innerHTML = content + `
+                    </select>
+                </div>`
+                        document.getElementById('save').setAttribute('onclick', 'editCity()')
+                        document.getElementById("exampleModalLabel").innerHTML = "EDIT"
+                    }
+
+                })
+            }
+        })
+    }
+
+    function getListCity(data) {
+        let content = `<thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Country</th>
+            <th scope="col">Acreage</th>
+            <th scope="col">Population</th>
+            <th scope="col">GDP</th>
+            <th scope="col">Description</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
+        </tr>
+        </thead>`
+        for (let i = 0; i < data.length; i++) {
+            content += `<tr data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="view(${data[i].id})">
+            <th scope="row">${data[i].id}</th>
+            <td>${data[i].name}</td>
+            <td>${data[i].country.name}</td>
+            <td>${data[i].acreage}</td>
+            <td>${data[i].population}</td>
+            <td>${data[i].gdp}</td>
+            <td>${data[i].description}</td>
+            <td onclick="remove(${data[i].id})">
+            <button type="button" style="color: red">
+                      Delete
+            </button>
+
+            </td>
+            <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="findCity(${data[i].id})">
+                      Edit
+            </button>
+</td>
+        </tr>`
+        }
+        document.getElementById("list-product").innerHTML = content
+
+    }
+
+    function editCity() {
+        let id = $("#id").val()
+        let name = $("#name").val()
+        let country = $("#country").val()
+        let acreage = $("#acreage").val()
+        let population = $("#population").val()
+        let gdp = $("#gdp").val()
+        let description = $("#description").val()
+        let city = {
+            id: id,
+            name: name,
+            country: {
+                id: country
+            },
+            acreage: acreage,
+            population: population,
+            gdp: gdp,
+            description: description,
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "put",
+            data: JSON.stringify(city),
+            url: "/edit/" + id,
+            success: function (data) {
+                $.ajax({
+                    type: "get",
+                    url: "/city",
+                    success: function (data) {
+                        getListCity(data)
+                    }
+                })
+            }
+        })
+    }
+
+    function view(id) {
+        $.ajax({
+            type: "get",
+            url: "/find/" + id,
+            success: function (data) {
+                let content = `
+            <div><h1>ID:<span>${data.id}</span> </h1> </div>
+            <div><h1>City: <span>${data.name}</span></h1> </div>
+            <div><h1>Country: <span>${data.country.name}</span></h1> </div>
+            <div><h1>Acreage: <span>${data.acreage}</span></h1> </div>
+            <div><h1>Population:  <span>${data.population}</span></h1></div>
+            <div><h1>GDP: <span>${data.gdp}</span></h1> </div>
+            <div><h1>description: <span>${data.description}</span></h1> </div>`
+
+                document.getElementById("modal-content").innerHTML = content
+                document.getElementById("exampleModalLabel").innerHTML = "VIEW"
+                document.getElementById("button").innerHTML = ``
+
+            }
+        })
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
